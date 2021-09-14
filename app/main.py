@@ -30,11 +30,6 @@ app.add_middleware(
         allow_headers=["*"],
     )
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
 
 @app.get("/players", response_model=List[schemas.PlayerBase])
 def read_players(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -43,6 +38,7 @@ def read_players(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
 
 
 # Generate all players from a fixture
+# Only allowed to be used once
 @app.get("/generate-players", status_code=200)
 def generate_players(db: Session = Depends(get_db)):
     existing_players = crud.get_players(db)
