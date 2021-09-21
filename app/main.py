@@ -32,8 +32,13 @@ app.add_middleware(
 
 
 @app.get("/players", response_model=List[schemas.PlayerBase])
-def read_players(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    players = crud.get_players(db, skip=skip, limit=limit)
+def read_players(
+    skip: int = 0,
+    limit: int = 100,
+    position: str = None,
+    db: Session = Depends(get_db)
+):
+    players = crud.get_players(db, skip=skip, limit=limit, position=position)
     return players
 
 

@@ -7,7 +7,9 @@ def get_player(db: Session, player_id: int):
     return db.query(models.Player).filter(models.Player.id == player_id).first()
 
 
-def get_players(db: Session, skip: int = 0, limit: int = 100):
+def get_players(db: Session, skip: int = 0, limit: int = 100, position=None):
+    if position:
+        return db.query(models.Player).filter(models.Player.position == position).offset(skip).limit(limit).all()
     return db.query(models.Player).offset(skip).limit(limit).all()
 
 
