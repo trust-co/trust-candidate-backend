@@ -2,6 +2,10 @@ from sqlalchemy.orm import Session
 
 from . import models, schemas
 
+def get_players(db: Session, position: str = None):
+    if position:
+        return db.query(models.Player).filter(models.Player.position == position).all()
+    return db.query(models.Player).all()
 
 def create_player(db: Session, player: schemas.PlayerBase):
     db_player = models.Player(

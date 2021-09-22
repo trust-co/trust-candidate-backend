@@ -31,11 +31,17 @@ app.add_middleware(
     )
 
 
+@app.get("/players", response_model=List[schemas.PlayerBase])
+async def get_players(
+    db: Session = Depends(get_db),
+    position: str = None
+):
+    return crud.get_players(db=db, position=position)
 
 # Generate all players from a fixture
 # Only allowed to be used once
 @app.get("/generate-players", status_code=200)
-def generate_players(db: Session = Depends(get_db)):
+async def generate_players(db: Session = Depends(get_db)):
     existing_players = crud.get_players(db)
     if len(existing_players) > 0:
         raise HTTPException(
